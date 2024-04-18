@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:just_audio/just_audio.dart';
+import 'package:provider/provider.dart';
+import 'package:radios/pages/radio_list/radio_list_page.dart';
 
 void main() {
   runApp(const MyApp());
-  loadJsonData();
 }
 
 class MyApp extends StatelessWidget {
@@ -24,16 +23,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Future<void> loadJsonData() async {
-  String jsonString = await rootBundle.loadString('assets/data.json');
-  final jsonData = json.decode(jsonString);
-  var documentChange =
-      jsonData[0][0][1][0]['documentChange']['document']['fields'];
-  String website = documentChange['website']['stringValue'];
-  String city = documentChange['city']['stringValue'];
-  print('Website: $website, City: $city');
-}
-
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -44,39 +33,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+    return Provider<AudioPlayer>(
+      create: (_) => AudioPlayer(),
+      dispose: (_, AudioPlayer player) => player.dispose(),
+      child: const MaterialApp(
+        home: RadioListPage(),
       ),
     );
   }
