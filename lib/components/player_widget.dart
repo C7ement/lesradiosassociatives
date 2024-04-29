@@ -11,13 +11,14 @@ class _PlayerWidgetState extends State<PlayerWidget> {
   @override
   Widget build(BuildContext context) {
     final player = Provider.of<AudioPlayer>(context);
+
     return StreamBuilder<PlayerState>(
         stream: player.playerStateStream,
         builder: (context, snapshot) {
           final playerState = snapshot.data;
           if (!snapshot.hasData || playerState == null) return Container();
           return Container(
-            padding: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(8.0),
             color: Colors.blueGrey,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,

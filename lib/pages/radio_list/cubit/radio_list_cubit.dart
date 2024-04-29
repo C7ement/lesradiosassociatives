@@ -11,9 +11,16 @@ class RadioListCubit extends Cubit<RadioListState> {
     try {
       emit(RadioListLoading());
       final radios = await Repository().getRadios();
-      emit(RadioListLoaded(radios: radios));
+      emit(RadioListLoaded(radios: radios, filter: ""));
     } catch (e) {
       emit(RadioListError(e.toString()));
+    }
+  }
+
+  Future<void> updateFilter(String filter) async {
+    final currentState = state;
+    if (currentState is RadioListLoaded) {
+      emit(currentState.copyWith(filter: filter));
     }
   }
 }
