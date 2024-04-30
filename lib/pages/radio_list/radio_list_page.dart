@@ -41,29 +41,7 @@ class _ExerciseListPage extends StatelessWidget {
                 const SizedBox(height: 8),
                 _buildSearchField(),
                 const SizedBox(height: 8),
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton.icon(
-                    style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.white),
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.transparent),
-                      side: MaterialStateProperty.all<BorderSide>(
-                          BorderSide.none),
-                      overlayColor: MaterialStateProperty.resolveWith<Color>(
-                        (Set<MaterialState> states) {
-                          return states.contains(MaterialState.pressed)
-                              ? Colors.white.withOpacity(0.1)
-                              : Colors.transparent;
-                        },
-                      ),
-                    ),
-                    icon: const Icon(Icons.location_on),
-                    label: const Text('Radios autour de moi'),
-                    onPressed: () {},
-                  ),
-                ),
+                _buildLocationFilterButton(),
               ],
             ),
           ),
@@ -182,7 +160,7 @@ Widget _buildSearchField() {
           padding: const EdgeInsets.symmetric(horizontal: 32),
           child: TextField(
             onChanged: (value) =>
-                context.read<RadioListCubit>().updateFilter(value),
+                context.read<RadioListCubit>().updateTextFilter(value),
             decoration: InputDecoration(
               hintText: 'Rechercher une radio',
               filled: true,
@@ -193,6 +171,41 @@ Widget _buildSearchField() {
               enabledBorder: border,
               focusedBorder: border,
             ),
+          ),
+        );
+      } else {
+        return Container();
+      }
+    },
+  );
+}
+
+Widget _buildLocationFilterButton() {
+  return BlocBuilder<RadioListCubit, RadioListState>(
+    builder: (context, state) {
+      if (state is RadioListLoaded) {
+        final isActive = state.positionFilter != null;
+        return Align(
+          alignment: Alignment.centerRight,
+          child: TextButton.icon(
+            style: ButtonStyle(
+              foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(Colors.transparent),
+              side: MaterialStateProperty.all<BorderSide>(BorderSide.none),
+              overlayColor: MaterialStateProperty.resolveWith<Color>(
+                (Set<MaterialState> states) {
+                  return states.contains(MaterialState.pressed)
+                      ? Colors.white.withOpacity(0.1)
+                      : Colors.transparent;
+                },
+              ),
+            ),
+            icon: Icon(isActive ? Icons.location_off : Icons.location_on),
+            label:
+                Text(isActive ? 'Toutes les radios' : 'Radios autour de moi'),
+            onPressed: () =>
+                context.read<RadioListCubit>().togglePositionFilter(),
           ),
         );
       } else {

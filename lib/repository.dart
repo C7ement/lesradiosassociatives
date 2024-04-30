@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:latlong2/latlong.dart';
 
 import 'models/radio.dart';
 
@@ -35,6 +36,10 @@ class Repository {
         city: e['city']?['stringValue'] ?? '',
         streamlink: e['streamlink']?['stringValue'] ?? '',
         logoFileName: filename,
+        position: LatLng(
+          e['lat']?['doubleValue'] ?? 0,
+          e['lng']?['doubleValue'] ?? 0,
+        ),
       );
     }).whereType<Radio>();
     return radios.toList() as List<Radio>;
