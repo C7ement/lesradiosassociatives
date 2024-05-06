@@ -58,7 +58,6 @@ class _ExerciseListPage extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(child: _buildListView()),
-                  const SizedBox(height: 20),
                 ],
               ),
             ),

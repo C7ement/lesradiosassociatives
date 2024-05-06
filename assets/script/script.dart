@@ -6,7 +6,7 @@ import 'radio_station.dart';
 void main() async {
   // File paths
   var inputFilePath = '../data.json';
-  var outputFilePath = '../output.json';
+  var outputFilePath = '../output_map.json';
 
   // Read JSON from file
   var inputFile = File(inputFilePath);
@@ -14,40 +14,37 @@ void main() async {
   var data = jsonDecode(jsonData);
 
   // Assuming you want to process only the first document change
-  var documentChange = data[0][0][1][0]['documentChange']['document'];
-  final keys = data.map((e) {
-    print(e[0][1].length);
-    return e[0][0];
+  final radios = data.map((e) {
+    final doc = e[0][1][0]['documentChange']['document'];
+    Map<String, dynamic> fields = {};
+    doc['fields'].forEach((key, value) {
+      fields[key] = value[value.keys.first];
+    });
+    return RadioStation(
+      name: fields['name'],
+      city: fields['city'],
+      team: fields['team'],
+      zipcode: fields['zipcode'],
+      lat: fields['lat'],
+      lng: fields['lng'],
+      website: fields['website'],
+      logo: fields['logo'],
+      status: fields['status'],
+      streamlink: fields['streamlink'],
+      slogan: fields['slogan'],
+      geohash: fields['geohash'],
+      fblink: fields['fblink'],
+    );
   });
-  print(keys);
 
   // Extract fields
-  Map<String, dynamic> fields = {};
-  documentChange['fields'].forEach((key, value) {
-    fields[key] = value[value.keys
-        .first]; // Assuming the value is always a map with a single key-value
-  });
 
   // Create or update the RadioStation object
-  RadioStation radio = RadioStation(
-    name: fields['name'],
-    city: fields['city'],
-    team: fields['team'],
-    zipcode: fields['zipcode'],
-    lat: fields['lat'],
-    lng: fields['lng'],
-    website: fields['website'],
-    logo: fields['logo'],
-    status: fields['status'],
-    streamlink: fields['streamlink'],
-    slogan: fields['slogan'],
-    geohash: fields['geohash'],
-    fblink: fields['fblink'],
-  );
 
   // Write updated details to file
   var outputFile = File(outputFilePath);
-  await outputFile.writeAsString(jsonEncode(radio.toJson()));
+  final radioMap = {for (final radio in radios) radio.name: radio};
+  await outputFile.writeAsString(jsonEncode(radioMap));
 
   print('Data has been updated and saved to $outputFilePath');
 }
