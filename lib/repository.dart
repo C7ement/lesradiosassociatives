@@ -35,6 +35,7 @@ class Repository {
         website: e['website']?['stringValue'] ?? '',
         city: e['city']?['stringValue'] ?? '',
         streamlink: e['streamlink']?['stringValue'] ?? '',
+        name: e['name']?['stringValue'] ?? '',
         logoFileName: filename,
         position: LatLng(
           e['lat']?['doubleValue'] ?? 0,

@@ -17,7 +17,7 @@ class RadioListLoaded extends RadioListState {
   final List<Radio> radios;
   final LatLng? positionFilter;
   List<Radio> get filteredRadios => [...radios]
-      .where((e) => e.website.contains(textFilter))
+      .where((e) => e.name.contains(textFilter))
       .where((e) => positionFilter == null
           ? true
           : e.position.distanceTo(positionFilter!) < 50000)

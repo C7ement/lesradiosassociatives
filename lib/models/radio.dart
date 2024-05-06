@@ -7,6 +7,7 @@ class Radio {
     required this.logoFileName,
     required this.streamlink,
     required this.position,
+    required this.name,
   });
 
   final String city;
@@ -14,4 +15,5 @@ class Radio {
   final String logoFileName;
   final String streamlink;
   final LatLng position;
+  final String name;
 }

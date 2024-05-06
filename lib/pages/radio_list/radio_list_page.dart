@@ -50,15 +50,9 @@ class _ExerciseListPage extends StatelessWidget {
               decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                    "assets/images/color_bg.jpg",
+                    "assets/images/light_grey_bg.jpg",
                   ),
                   fit: BoxFit.cover,
-                  colorFilter: ColorFilter.matrix([
-                    0.33, 0.59, 0.11, 0, 0, // red channel
-                    0.33, 0.59, 0.11, 0, 0, // green channel
-                    0.33, 0.59, 0.11, 0, 0, // blue channel
-                    0, 0, 0, 0.5, 0, // alpha channel
-                  ]),
                 ),
               ),
               child: Column(
@@ -84,14 +78,14 @@ Widget _buildListView() {
         return const Center(child: CircularProgressIndicator());
       } else if (state is RadioListLoaded) {
         return GridView.count(
-          crossAxisCount: 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-          padding: const EdgeInsets.all(10),
+          crossAxisCount: 3,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 0,
+          padding: const EdgeInsets.all(4),
           children: state.filteredRadios
               .map(
                 (radio) => Container(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(8),
                   child: InkWell(
                     child: Container(
                       decoration: BoxDecoration(
